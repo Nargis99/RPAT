@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <link rel="icon" href="static/logo.png" type="image/x-icon">
+        <title>
+            Images
+        </title>
+        <style>
+            body {
+                background-color:antiquewhite;
+            }
+            h3{
+              margin: 30px 0 10px 0;
+            }
+            .rightButton{
+              display: flex;
+              justify-content: flex-end;
+              direction: ltr;
+              margin-left: 600px;
+            }
+        </style>
+    </head>
+    <body>
+      <center>
+        {{x}}
+      </center> 
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img src="/static/logo.png" width="80" height="50" alt="" style="margin-left:-30px;">
+          </a>    
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <button type="button" class="btn btn-primary" onclick="document.getElementById('id01').style.display='block'">Application Notes</button>
+            </li>
+          </ul>
+
+        <div class="rightButton" >
+          <form action="/download" method="get">
+            <input type="submit" value="Download File" class="btn btn-link px-3 me-2">
+          </form>
+        <!-- <form action="/email_send" method="get">
+          <input type="submit" value="Send Email" class="btn btn-link px-3 me-2">
+        </form> -->
+          <form action="/go_back" method="get">
+            <input type="submit" value="Home Page" class="btn btn-link px-3 me-2">
+          </form>
+        </div>
+        </div>
+        </div>
+      </nav>
+      <div class="container-fluid">
+        <p style="text-align: right;color: red;font-weight: bold; font-size: 10px;">**Click on the image to expand</p>
+        <div class="row">
+          <div id="id01" class="w3-modal">
+          <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+            <header class="w3-container w3-blue"> 
+              <span onclick="document.getElementById('id01').style.display='none'" 
+                class="w3-button w3-blue w3-xlarge w3-display-topright">&times;
+              </span>
+                <h2>Note</h2>
+            </header>
+
+            <div class="w3-bar w3-border-bottom">
+              <button class="tablink w3-bar-item w3-button" onclick="openNote(event, 'Summary')">Summary Sheet Note</button>
+              <button class="tablink w3-bar-item w3-button" onclick="openNote(event, 'Overallocated')">Overallocated Resources Sheet Note</button>
+            </div>
+
+            <div id="Summary" class="w3-container city">
+              <h1>Summary</h1>
+                <p><b>All the resources which are not available during any of the month then it is being listed in this sheet.</b></p>
+                <p>There are two columns in each month i.e., <b>P6 hours & Available hours.</b></p>
+                <ol>
+                  <li>P6 Hours is the hours assigned in the new/existing project.</li>
+                  <li>Assigned hours is the difference between the UT Available hours & RFT Hours.</li>
+                </ol>
+            </div>
+
+            <div id="Overallocated" class="w3-container city">
+              <h1>Overallocated Resources</h1>
+              <p><b>** Avail Hrs - Available Hours </b></p>
+              <p style="background-color: red;text-align:center">Overallocated Hours above UT in RFT</p>
+              <p style="background-color: pink;text-align:center"">Allocated Hours for this Project</p>
+              <p style="background-color: lightblue;text-align:center"">Available - No Issues</p>
+              <br>
+              <p>For Unique Resources, hours from P6 input file are being summed to the RFT hours and then it is compared
+                with the available utilization hours.
+              </p>
+              <p><b>Scenario 1: New Project</b></p>
+              <p>
+                <ol>
+                  <li>Formula, A = UT Hours -(RFT Hours + P6 Hours)</li>
+                </ol>
+              </p>
+              <p><b>Scenario 2: Existing Project</b></p>
+              <p>
+                <ol>
+                  <li>Formula, A = UT Hours -(RFT Hours + P6 Hours)</li>
+              
+                </ol>
+                * RFT Hours (It is the sum of the hours after removing allocated hours for the project from RFT.)
+              </p>
+              <p><b>Interpretation:</b></p>
+              <p>
+                <ol>
+                  <li>If A < 0, then the resource is not available for the month.</li>
+                  <li>If A > 0, then the resource is available for the month.</li>
+                </ol>
+              </p>
+                
+            </div>
+
+            <div class="w3-container w3-light-grey w3-padding">
+              <button class="w3-button w3-right w3-white w3-border" onclick="document.getElementById('id01').style.display='none'">Close</button>
+            </div>
+          </div>
+          </div>
+
+        </div>
+        <script>
+          document.getElementsByClassName("tablink")[0].click();
+          function openNote(evt, cityName) {
+            var i, x, tablinks;
+            x = document.getElementsByClassName("city");
+            for (i = 0; i < x.length; i++) {
+              x[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablink");
+            for (i = 0; i < x.length; i++) {
+              tablinks[i].classList.remove("w3-light-grey");
+            }
+            document.getElementById(cityName).style.display = "block";
+            evt.currentTarget.classList.add("w3-light-grey");
+          }
+
+        </script>
+
+        <div class="col-md-6">
+          <h4><b><u>Resource Assignment Summary</u></b></h4>
+        </div>
+        <div class="col-md-12">
+          <center><img src="/static/{{l1}}.png" style="width:100%;cursor:zoom-in" onclick="document.getElementById('modal01').style.display='block'"></center>
+          <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
+            <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
+            <div class="w3-modal-content w3-animate-zoom">
+              <img src="/static/{{l1}}.png" style="width:100%">
+            </div>
+          </div>
+        </div>
+                
+        <!-- <div class="col-md-6">
+          <h4><b><u>Overallocated Resource Assignment Detail</u></b></h4>
+        </div>
+        <div class="col-md-12">
+        <center><img src="/static/{{l2}}.png" style="width:70%;cursor:zoom-in" onclick="document.getElementById('modal02').style.display='block'"></center>
+        <br>
+          <div id="modal02" class="w3-modal" onclick="this.style.display='none'">
+            <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
+            <div class="w3-modal-content w3-animate-zoom">
+              <img src="/static/{{l2}}.png" style="width:100%;">
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </body>
+</html>
